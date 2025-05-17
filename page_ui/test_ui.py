@@ -1,7 +1,7 @@
 import pytest
 from selenium import webdriver
 import allure
-from search_page_ui import SearchPage
+from page_ui import SearchPage
 
 
 @pytest.fixture(scope="session")
