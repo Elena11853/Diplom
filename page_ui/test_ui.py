@@ -1,7 +1,7 @@
 import pytest
 from selenium import webdriver
 import allure
-from page_ui import SearchPage
+from search_page_ui import SearchPage
 
 
 @pytest.fixture(scope="session")
@@ -23,8 +23,7 @@ def search_page(browser):
 @allure.feature("Поиск книжной информации")
 @allure.title("Поиск книги по заголовку")
 @allure.description(
-    "Тест проверяет возможность поиска книги " \
-    "по заголовку 'Айвенго'.")
+    "Тест проверяет возможность поиска книги по заголовку 'Айвенго'.")
 def test_search_book_by_title(search_page):
     query = 'айвенго'
     search_page.enter_search_query(query)
@@ -37,13 +36,30 @@ def test_search_book_by_title(search_page):
         assert any(query in title for title in product_titles
                    ), "Название книги не найдено в списке продуктов"
     
-
-
+@allure.epic("UI Тестирование")
+@allure.feature("Поиск книжной информации")
+@allure.title("Поиск книги с дефисом")
+@allure.description(
+    "Тест проверяет возможность поиска книги 'Конек-горбунок'.")
+def test_search_book_with_hyphen(search_page):
+    query = 'Конек-горбунок'
+    search_page.enter_search_query(query)
+    search_page.click_search_button()
+    product_titles = search_page.get_book_titles()
+    
+    with allure.step("Проверяем что результаты поиска на странице есть"):
+        assert len(product_titles) > 0, "Нет результатов поиска"
+    with allure.step(
+        "Проверяем что поиск работает при наличии спец. символов в названии"
+        ):
+        assert any(query.lower() in title for title in product_titles
+                   ), "Название книги не найдено в списке продуктов"
+    
 @allure.epic("UI Тестирование")
 @allure.feature("Поиск книжной информации")
 @allure.title("Поиск по заголовку с использованием числительных")
 @allure.description(
-    "Тест проверяет возможность поиска книги по заголовку '1984'.")
+    "Тест проверяет возможность поиска книги по заголовку '12 стульев'.")
 def test_search_for_a_book_with_numbers_in_the_title(search_page):
     query = '12 стульев'
     search_page.enter_search_query(query)

@@ -1,23 +1,18 @@
 import requests
 import pytest
 import config
-import allure
 
 class Page:
     def __init__(self):
         """ Инициализация класса Page. 
-        Настройка заголовков HTTP-запросов 
-        и получение токена авторизации. """
+        Настройка заголовков 
+        HTTP-запросов и получение токена авторизации. """
         self._headers = {
-            "User-Agent": 
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-            "AppleWebKit/537.36 (KHTML, like Gecko) "
-            "Chrome/91.0.4472.124 Safari/537.36",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
             "Accept": "application/json"
         }
         self._headers["Authorization"] = f"Bearer {self._get_auth_token()}"
-    
-    @allure.step('Получение токена авторизавции')
+
     def _get_auth_token(self):
         """ Получение токена авторизации от сервера. 
         Возвращает токен, используемый для аутентификации запросов. 
@@ -34,12 +29,11 @@ class Page:
             return token
         except Exception as e:
             pytest.fail(f"Ошибка получения токена: {e}")
-
-    @allure.step('Добавление товара в корзину')
+    
     def add_product_to_cart(self, product_id):
-        """ Добавляет товар в корзину. 
-        :param product_id: идентификатор товара. 
-        :return: объект Response с результатом POST-запроса. """
+        """ Добавляет товар в корзину. :param product_id: 
+        идентификатор товара. :return: 
+        объект Response с результатом POST-запроса. """
         try:
             url = f"{config.API_URL}{config.PRODUCT}"
             json = {
@@ -52,21 +46,18 @@ class Page:
         except Exception as e:
             pytest.fail(f"Ошибка добавления товара: {e}")
 
-    @allure.step('Удаление товара из корзины')
     def delete_product(self, product_id):
-        """ Удаляет товар из корзины.
-          :param product_id: идентификатор товара. 
-          :return: объект Response с результатом DELETE-запроса. """
+        """ Удаляет товар из корзины. 
+        :param product_id: идентификатор товара. 
+        :return: объект Response с результатом DELETE-запроса. """
         try:
             url = f"{config.API_URL}{config.PRODUCT}/{product_id}"
             return requests.delete(url, headers=self._headers)
         except Exception as e:
             pytest.fail(f"Ошибка удаления товара: {e}")
     
-    @allure.step('Восстановление товара в корзине')
     def restore_product(self, product_id):
-        """ Восстанавливает ранее удалённый товар 
-        обратно в корзину. 
+        """ Восстанавливает ранее удалённый товар обратно в корзину. 
         :param product_id: идентификатор товара. 
         :return: объект Response с результатом POST-запроса. """
         try:
@@ -78,7 +69,6 @@ class Page:
         except Exception as e:
             pytest.fail(f"Ошибка восстановления товара: {e}")
 
-    @allure.step('Получение корзины')
     def get_cart(self):
         """ Запрашивает содержимое корзины товаров. 
         :return: объект Response с результатами GET-запроса. """
@@ -88,20 +78,17 @@ class Page:
         except Exception as e:
             pytest.fail(f"Ошибка получения корзины: {e}")
 
-    @allure.step('Получение id товара в корзине ' \
-    'по его id в каталоге')
     def get_cart_product_id(self, product_id):
         """ Ищет продукт в корзине по его каталоговому ID 
         и возвращает внутренний ID продукта в корзине. 
         :param product_id: внешний идентификатор товара. 
-        :return: внутренний ID товара в корзине либо None, 
-        если не найден. """
+        :return: внутренний ID товара в корзине 
+        либо None, если не найден. """
         products = self.get_cart().json().get("products", [])
         product = next((product for product in products if product["goodsId"] == product_id), None)
 
         return product['id'] if product else None
 
-    @allure.step('Очистка корзины')
     def clear_cart(self):
         """ Очищает всю корзину товаров. 
         :return: объект Response с результатом DELETE-запроса. """
