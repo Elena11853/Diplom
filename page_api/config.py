@@ -1,0 +1,5 @@
+BASE_URL = 'https://www.chitai-gorod.ru/'
+API_URL = 'https://web-gate.chitai-gorod.ru/api/v1/'
+CART = 'cart'
+PRODUCT = 'cart/product'
+PRODUCT_RESTORE = 'cart/product-restore'
