@@ -73,9 +73,9 @@ class SearchPage:
         self.wait_for_catalog()
 
         catalog = self.find_element(By.CLASS_NAME, 'app-catalog__content')
-        product_titels = catalog.find_elements(By.CLASS_NAME, "product-card__title")
+        product_titles = catalog.find_elements(By.CLASS_NAME, "product-card__title")
 
-        return [title.text.strip().lower() for title in product_titels]
+        return [title.text.strip().lower() for title in product_titles]
 
     @allure.step("Получение названий авторов")
     def get_author_titles(self):
@@ -88,8 +88,8 @@ class SearchPage:
         self.wait_for_catalog()
 
         catalog = self.find_element(By.CLASS_NAME, 'app-catalog__content')
-        author_titels = catalog.find_elements(By.CLASS_NAME, "product-card__subtitle")
-        return [author.text.strip().lower() for author in author_titels]
+        author_titles = catalog.find_elements(By.CLASS_NAME, "product-card__subtitle")
+        return [author.text.strip().lower() for author in author_titles]
 
     @allure.step("Проверка сообщения об отсутствии результатов")
     def get_no_results_message(self):
@@ -103,4 +103,3 @@ class SearchPage:
 
         no_result_text = self.driver.find_element(By.CLASS_NAME, "catalog-stub__title")
         return no_result_text.text.strip().lower()
-    

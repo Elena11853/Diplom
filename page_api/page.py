@@ -2,6 +2,7 @@ import requests
 import pytest
 import config
 
+
 class Page:
     def __init__(self):
         """ Инициализация класса Page. 
@@ -29,7 +30,7 @@ class Page:
             return token
         except Exception as e:
             pytest.fail(f"Ошибка получения токена: {e}")
-    
+
     def add_product_to_cart(self, product_id):
         """ Добавляет товар в корзину. :param product_id: 
         идентификатор товара. :return: 
@@ -55,7 +56,7 @@ class Page:
             return requests.delete(url, headers=self._headers)
         except Exception as e:
             pytest.fail(f"Ошибка удаления товара: {e}")
-    
+
     def restore_product(self, product_id):
         """ Восстанавливает ранее удалённый товар обратно в корзину. 
         :param product_id: идентификатор товара. 
